@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "词伴公共函数注册表结构",
+  "description": "本文件是注册表的 JSON Schema。将具体函数登记到 docs/functions/function-registry.json，并用本 schema 校验。函数实现还须遵守企划书中的完整注释规范。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "functions"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "functions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["functionId", "name", "module", "summary", "implementationPath", "inputSchema", "outputSchema", "errorCodes", "permission", "preconditions", "postconditions", "sideEffects", "offline", "idempotency", "concurrency", "performance", "testPaths", "owner", "since"],
+        "properties": {
+          "functionId": { "type": "string", "pattern": "^[A-Z]+-[A-Z]+-[0-9]{3}$" },
+          "name": { "type": "string", "pattern": "^[a-z][A-Za-z0-9]+$" },
+          "module": { "type": "string", "minLength": 1 },
+          "summary": { "type": "string", "minLength": 1 },
+          "implementationPath": { "type": "string", "minLength": 1 },
+          "inputSchema": { "type": "string", "minLength": 1 },
+          "outputSchema": { "type": "string", "minLength": 1 },
+          "errorCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]+$" } },
+          "permission": { "type": "string", "minLength": 1 },
+          "preconditions": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "postconditions": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "sideEffects": { "type": "array", "uniqueItems": true, "items": { "enum": ["local-db-read", "local-db-write", "server-db-read", "server-db-write", "outbox-write", "network", "media", "notification", "billing", "audit"] } },
+          "offline": { "enum": ["supported", "cached-only", "queued", "unavailable"] },
+          "idempotency": { "type": "string", "minLength": 1 },
+          "concurrency": { "type": "string", "minLength": 1 },
+          "performance": { "type": "string", "minLength": 1 },
+          "testPaths": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+          "owner": { "type": "string", "minLength": 1 },
+          "since": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" }
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "schemaVersion": 1,
+      "functions": [
+        {
+          "functionId": "LEARN-REVIEW-001",
+          "name": "submitReview",
+          "module": "learning",
+          "summary": "提交一次复习并保存本地事件 状态和待同步消息",
+          "implementationPath": "packages/domain/src/learning/submitReview.ts",
+          "inputSchema": "SubmitReviewInputSchema",
+          "outputSchema": "SubmitReviewOutputSchema",
+          "errorCodes": ["VALIDATION_FAILED", "ITEM_NOT_FOUND", "EVENT_CONFLICT", "STATE_CONFLICT", "STORAGE_FAILED"],
+          "permission": "当前档案拥有 learningItemId",
+          "preconditions": ["已揭示并完成评分", "输入通过运行时 schema"],
+          "postconditions": ["事件 状态 outbox 同一本地事务提交"],
+          "sideEffects": ["local-db-read", "local-db-write", "outbox-write"],
+          "offline": "supported",
+          "idempotency": "相同 eventId 与相同载荷返回既有结果 不同载荷返回 EVENT_CONFLICT",
+          "concurrency": "本地事务校验 baseStateRevision",
+          "performance": "基准机 p95 小于150ms 为待实测目标",
+          "testPaths": ["tests/learning/submitReview.spec.ts"],
+          "owner": "learning-module-maintainer",
+          "since": "1.0.0"
+        }
+      ]
+    }
+  ]
+}

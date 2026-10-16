@@ -1,0 +1,9 @@
+{
+  "name": "词伴英语学习",
+  "short_name": "词伴",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f8f4",
+  "theme_color": "#0b6b56",
+  "icons": []
+}
