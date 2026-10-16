@@ -80,4 +80,3 @@ await mkdir('docs/setup', { recursive: true });
 await writeFile('docs/setup/mcp-verification.json', JSON.stringify({ verifiedAt: new Date().toISOString(), checks }, null, 2));
 console.log(JSON.stringify(checks, null, 2));
 process.exitCode = checks.some((check) => check.status === 'failed') ? 1 : 0;
-
