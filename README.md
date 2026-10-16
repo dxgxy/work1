@@ -21,8 +21,23 @@ node scripts/verify-mcp.mjs
 
 ## 现有草稿的限制
 
-当前存储是 localStorage，尚未实现 IndexedDB 原子事务、事件幂等与真正的 outbox；调度为草稿算法，必须替换成核验并固定版本的 FSRS。测评是少量演示题，听力页面的进度与统计存在占位数据。页面中的同步、下载和听力完成标志不能作为真实能力验收依据。
+当前存储是 localStorage，尚未实现 IndexedDB 原子事务、事件幂等与真正的 outbox；调度为草稿算法，必须替换成核验并固定版本的 FSRS。测评是少量演示题，今日页的部分统计仍是占位数据。听力页已改为句子发音示例，没有宣称已下载离线音频。页面中的同步状态不能作为真实服务端能力验收依据。
 
 下一轮从 G0 Web 能力验证和 G1 本地学习事务闭环开始，补齐函数格式、注册表、可恢复会话、真实统计和失败路径。服务端、账号鉴权、两端同步、Android、AI 和支付未实现。
 
 本地 Git 分支 `codex/local-web`，远程 origin 已移除，不上传云端。
+
+## 本轮新增
+
+- 词库 → 批量导入：先下载 UTF-8 模板，选择 CSV / TXT（制表符）/ JSON 文件，检查预览与错误，确认后保存。格式详见 [词书导入规范](docs/wordbook-format.md)，模板在 `public/templates/`。
+- 设置 → Google 扩展发音：加载项目附带的 `extensions/google-pronunciation` 独立 Chrome 扩展，再启用并测试。助手仅选择系统可用列表中的 Google 英语语音；它不是 Google 官方扩展，也不自带 Google 语音引擎。未安装扩展、缺少语音或离线均会提示，不会用其他语音冒充。
+- Oxford 构建期数据生成与来源标记：[配置说明](docs/oxford-data-pipeline.md)。没有 API 凭据与离线许可时，预加载包仍为空，应用显示“演示数据”，不会声称现有示例来自 Oxford。
+
+```powershell
+npm.cmd test
+npm.cmd run build
+# 保持 npm.cmd run dev 运行，然后执行浏览器检查
+node scripts/browser-smoke.mjs
+```
+
+本轮测试覆盖格式解析、编码、重复、超限、失败不写入、离线禁播与桥接回复校验。浏览器检查覆盖导入预览/确认和未启用扩展提示；尚未验证真实 Google 发声、真实 Oxford 请求或 Android。

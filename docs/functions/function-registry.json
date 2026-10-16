@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "functions": [
+    {
+      "functionId": "IMPORT-CSV-001",
+      "name": "parseBookFile",
+      "module": "books",
+      "summary": "Parse a UTF-8 word-book into a validated preview",
+      "implementationPath": "src/domain/bookImport.ts",
+      "inputSchema": "contracts.schema.json#/$defs/ParseBookInput",
+      "outputSchema": "contracts.schema.json#/$defs/ImportPreview",
+      "errorCodes": [],
+      "permission": "none; local data transformation",
+      "preconditions": [
+        "Input is accepted by the declared runtime boundary"
+      ],
+      "postconditions": [
+        "Invalid and duplicate rows reported; no storage mutation"
+      ],
+      "sideEffects": [],
+      "offline": "supported",
+      "idempotency": "Pure deterministic transformation",
+      "concurrency": "Synchronous, no shared writes",
+      "performance": "Bounded file size 10MiB / 10000 cards; O(n) transform",
+      "testPaths": [
+        "src/domain/bookImport.test.ts"
+      ],
+      "owner": "local-web-maintainer",
+      "since": "1.0.0"
+    },
+    {
+      "functionId": "IMPORT-CARD-001",
+      "name": "mapRowsToCards",
+      "module": "books",
+      "summary": "Map validated rows to privately imported cards",
+      "implementationPath": "src/domain/bookImport.ts",
+      "inputSchema": "contracts.schema.json#/$defs/RowsInput",
+      "outputSchema": "contracts.schema.json#/$defs/CardList",
+      "errorCodes": [],
+      "permission": "none; local data transformation",
+      "preconditions": [
+        "Rows passed parseBookFile preview validation"
+      ],
+      "postconditions": [
+        "No data uploaded; explicit provenance retained where applicable"
+      ],
+      "sideEffects": [],
+      "offline": "supported",
+      "idempotency": "Fresh UUIDs per call; store deduplicates by kind and normalized text",
+      "concurrency": "Synchronous, no shared writes",
+      "performance": "Bounded file size 10MiB / 10000 cards; O(n) transform",
+      "testPaths": [
+        "src/domain/bookImport.test.ts"
+      ],
+      "owner": "local-web-maintainer",
+      "since": "1.0.0"
+    },
+    {
+      "functionId": "IMPORT-KEY-001",
+      "name": "getCardKey",
+      "module": "books",
+      "summary": "Compute the shared normalized duplicate key",
+      "implementationPath": "src/domain/bookImport.ts",
+      "inputSchema": "contracts.schema.json#/$defs/CardKeyInput",
+      "outputSchema": "contracts.schema.json#/$defs/String",
+      "errorCodes": [],
+      "permission": "none; local data transformation",
+      "preconditions": [
+        "Input is accepted by the declared runtime boundary"
+      ],
+      "postconditions": [
+        "No data uploaded; explicit provenance retained where applicable"
+      ],
+      "sideEffects": [],
+      "offline": "supported",
+      "idempotency": "Pure deterministic transformation",
+      "concurrency": "Synchronous, no shared writes",
+      "performance": "Bounded file size 10MiB / 10000 cards; O(n) transform",
+      "testPaths": [
+        "src/domain/bookImport.test.ts"
+      ],
+      "owner": "local-web-maintainer",
+      "since": "1.0.0"
+    },
+    {
+      "functionId": "IMPORT-ERRORS-001",
+      "name": "mapImportErrors",
+      "module": "books",
+      "summary": "Export parser-generated validation messages as CSV",
+      "implementationPath": "src/domain/bookImport.ts",
+      "inputSchema": "contracts.schema.json#/$defs/ErrorsInput",
+      "outputSchema": "contracts.schema.json#/$defs/String",
+      "errorCodes": [],
+      "permission": "none; local data transformation",
+      "preconditions": [
+        "Input is accepted by the declared runtime boundary"
+      ],
+      "postconditions": [
+        "No data uploaded; explicit provenance retained where applicable"
+      ],
+      "sideEffects": [],
+      "offline": "supported",
+      "idempotency": "Pure deterministic transformation",
+      "concurrency": "Synchronous, no shared writes",
+      "performance": "Bounded file size 10MiB / 10000 cards; O(n) transform",
+      "testPaths": [
+        "src/domain/bookImport.test.ts"
+      ],
+      "owner": "local-web-maintainer",
+      "since": "1.0.0"
+    },
+    {
+      "functionId": "SPEECH-PLAY-001",
+      "name": "playPronunciation",
+      "module": "speech",
+      "summary": "Request Google pronunciation through the bundled Chrome extension",
+      "implementationPath": "src/domain/pronunciation.ts",
+      "inputSchema": "contracts.schema.json#/$defs/SpeechInput",
+      "outputSchema": "contracts.schema.json#/$defs/SpeechResult",
+      "errorCodes": [
+        "EXTENSION_DISABLED",
+        "OFFLINE",
+        "INVALID_INPUT",
+        "EXTENSION_UNAVAILABLE",
+        "EXTENSION_FAILED"
+      ],
+      "permission": "active local profile, explicit user playback",
+      "preconditions": [
+        "Input is accepted by the declared runtime boundary"
+      ],
+      "postconditions": [
+        "Only start acknowledgement reports success; timeout and offline return typed failure"
+      ],
+      "sideEffects": [
+        "media",
+        "network"
+      ],
+      "offline": "unavailable",
+      "idempotency": "Each request uses a distinct UUID; playback is repeatable",
+      "concurrency": "Independent request listeners removed on result or 8 second timeout",
+      "performance": "8 second response timeout",
+      "testPaths": [
+        "src/domain/pronunciation.test.ts"
+      ],
+      "owner": "local-web-maintainer",
+      "since": "1.0.0"
+    },
+    {
+      "functionId": "SPEECH-MESSAGE-001",
+      "name": "getSpeechMessage",
+      "module": "speech",
+      "summary": "Map a typed pronunciation result into status text",
+      "implementationPath": "src/domain/pronunciation.ts",
+      "inputSchema": "contracts.schema.json#/$defs/SpeechResult",
+      "outputSchema": "contracts.schema.json#/$defs/String",
+      "errorCodes": [],
+      "permission": "none; local data transformation",
+      "preconditions": [
+        "Input is accepted by the declared runtime boundary"
+      ],
+      "postconditions": [
+        "No data uploaded; explicit provenance retained where applicable"
+      ],
+      "sideEffects": [],
+      "offline": "supported",
+      "idempotency": "Pure deterministic transformation",
+      "concurrency": "Synchronous, no shared writes",
+      "performance": "Bounded file size 10MiB / 10000 cards; O(n) transform",
+      "testPaths": [
+        "src/domain/pronunciation.test.ts"
+      ],
+      "owner": "local-web-maintainer",
+      "since": "1.0.0"
+    },
+    {
+      "functionId": "OXFORD-PRELOAD-001",
+      "name": "getPreloadedCards",
+      "module": "dictionary",
+      "summary": "Load a validated Oxford pack, retaining labelled demo fallback",
+      "implementationPath": "src/data/preloadedCards.ts",
+      "inputSchema": "contracts.schema.json#/$defs/Unknown",
+      "outputSchema": "contracts.schema.json#/$defs/CardList",
+      "errorCodes": [],
+      "permission": "none; local data transformation",
+      "preconditions": [
+        "Input is accepted by the declared runtime boundary"
+      ],
+      "postconditions": [
+        "No data uploaded; explicit provenance retained where applicable"
+      ],
+      "sideEffects": [],
+      "offline": "supported",
+      "idempotency": "Pure deterministic transformation",
+      "concurrency": "Synchronous, no shared writes",
+      "performance": "Bounded file size 10MiB / 10000 cards; O(n) transform",
+      "testPaths": [
+        "src/data/preloadedCards.test.ts"
+      ],
+      "owner": "local-web-maintainer",
+      "since": "1.0.0"
+    }
+  ]
+}

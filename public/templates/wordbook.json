@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "title": "我的词书",
+  "cards": [
+    { "kind": "word", "text": "adapt", "translation": "适应；改编", "partOfSpeech": "v.", "pronunciation": "/əˈdæpt/", "definition": "to change something", "example": "We adapt to change.", "exampleTranslation": "我们适应变化。", "category": "我的导入" },
+    { "kind": "sentence", "text": "Make steady progress.", "translation": "取得持续进步。", "category": "我的导入" }
+  ]
+}

@@ -1,4 +1,5 @@
 export type UiMode = "clean" | "complete";
+export type Result<T, E extends string> = { ok: true; value: T } | { ok: false; error: { code: E; messageKey: string; retryable: boolean; details?: Readonly<Record<string, unknown>> } };
 export type NetworkPolicy = "online" | "wifi_only" | "manual_offline";
 export type Rating = "again" | "hard" | "good" | "easy";
 export type Skill = "meaning_recognition" | "word_recall" | "listening_recognition" | "spelling" | "sentence_listening";
@@ -15,7 +16,18 @@ export interface Card {
   exampleTranslation?: string;
   category: string;
   sourceType: "curated" | "user" | "imported";
+  /** Source provenance is kept separate from the display category. */
+  contentProvider: "oxford-dictionaries-api" | "demo-fixture" | "user" | "imported";
+  contentLicense: "licensed-api" | "pending-license" | "user-owned" | "imported-by-user";
+  dictionarySource?: { url: string; language: string; generatedAt: string; licenseReference: string };
   audioAvailable: boolean;
+  pronunciationProvider: "google-extension" | "browser-speech" | "none";
+}
+
+export interface SpeechExtensionConfig {
+  enabled: boolean;
+  extensionId: string;
+  extensionName: string;
 }
 
 export interface LearningItem {
@@ -49,6 +61,7 @@ export interface Profile {
   goal: string;
   timezone: string;
   onboardingComplete: boolean;
+  speechExtension: SpeechExtensionConfig;
 }
 
 export interface AssessmentAnswer {
@@ -81,6 +94,7 @@ export interface StoreState {
   submitReview: (itemId: string, rating: Rating, objectiveResult?: "correct" | "incorrect") => void;
   addCard: (card: Card) => void;
   importCards: (cards: Card[]) => void;
+  updateSpeechExtension: (config: Partial<SpeechExtensionConfig>) => void;
   addAssessmentAnswer: (answer: AssessmentAnswer) => void;
   resetAssessment: () => void;
   exportData: () => string;

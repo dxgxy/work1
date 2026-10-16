@@ -1,0 +1,369 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "ParseBookInput": {
+      "type": "object",
+      "required": [
+        "bytes",
+        "fileName"
+      ],
+      "properties": {
+        "bytes": {
+          "description": "UTF-8 ArrayBuffer, maximum 10485760 bytes"
+        },
+        "fileName": {
+          "type": "string",
+          "pattern": "\\.(csv|txt|json)$"
+        }
+      }
+    },
+    "ImportRow": {
+      "type": "object",
+      "required": [
+        "rowNumber",
+        "kind",
+        "text",
+        "translation"
+      ],
+      "properties": {
+        "rowNumber": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "kind": {
+          "enum": [
+            "word",
+            "sentence"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 5000
+        },
+        "translation": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 5000
+        },
+        "partOfSpeech": {
+          "type": "string"
+        },
+        "pronunciation": {
+          "type": "string"
+        },
+        "definition": {
+          "type": "string"
+        },
+        "example": {
+          "type": "string"
+        },
+        "exampleTranslation": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        }
+      }
+    },
+    "ImportPreview": {
+      "type": "object",
+      "required": [
+        "title",
+        "format",
+        "rows",
+        "errors",
+        "duplicateRows"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "format": {
+          "enum": [
+            "csv",
+            "tsv",
+            "json"
+          ]
+        },
+        "rows": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/ImportRow"
+          }
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ImportError"
+          }
+        },
+        "duplicateRows": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "ImportError": {
+      "type": "object",
+      "required": [
+        "rowNumber",
+        "message"
+      ],
+      "properties": {
+        "rowNumber": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "message": {
+          "type": "string"
+        },
+        "raw": {
+          "type": "string"
+        }
+      }
+    },
+    "CardKeyInput": {
+      "type": "object",
+      "required": [
+        "kind",
+        "text"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "word",
+            "sentence"
+          ]
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "RowsInput": {
+      "type": "object",
+      "required": [
+        "rows"
+      ],
+      "properties": {
+        "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ImportRow"
+          }
+        },
+        "category": {
+          "type": "string"
+        }
+      }
+    },
+    "Card": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "text",
+        "translation",
+        "category",
+        "sourceType",
+        "contentProvider",
+        "contentLicense",
+        "audioAvailable",
+        "pronunciationProvider"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "word",
+            "sentence"
+          ]
+        },
+        "text": {
+          "type": "string"
+        },
+        "translation": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "sourceType": {
+          "enum": [
+            "curated",
+            "user",
+            "imported"
+          ]
+        },
+        "contentProvider": {
+          "enum": [
+            "oxford-dictionaries-api",
+            "demo-fixture",
+            "user",
+            "imported"
+          ]
+        },
+        "contentLicense": {
+          "enum": [
+            "licensed-api",
+            "pending-license",
+            "user-owned",
+            "imported-by-user"
+          ]
+        },
+        "audioAvailable": {
+          "type": "boolean"
+        },
+        "pronunciationProvider": {
+          "enum": [
+            "google-extension",
+            "browser-speech",
+            "none"
+          ]
+        }
+      }
+    },
+    "CardList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Card"
+      }
+    },
+    "ErrorsInput": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ImportError"
+      }
+    },
+    "String": {
+      "type": "string"
+    },
+    "SpeechInput": {
+      "type": "object",
+      "required": [
+        "text",
+        "rate",
+        "config",
+        "policy"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 5000
+        },
+        "rate": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 2
+        },
+        "config": {
+          "type": "object",
+          "required": [
+            "enabled",
+            "extensionId",
+            "extensionName"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "extensionId": {
+              "type": "string",
+              "pattern": "^([a-p]{32})?$"
+            },
+            "extensionName": {
+              "type": "string"
+            }
+          }
+        },
+        "policy": {
+          "enum": [
+            "online",
+            "wifi_only",
+            "manual_offline"
+          ]
+        }
+      }
+    },
+    "SpeechResult": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "ok",
+            "value"
+          ],
+          "properties": {
+            "ok": {
+              "const": true
+            },
+            "value": {
+              "type": "object",
+              "required": [
+                "message"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "voiceName": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "ok",
+            "error"
+          ],
+          "properties": {
+            "ok": {
+              "const": false
+            },
+            "error": {
+              "type": "object",
+              "required": [
+                "code",
+                "messageKey",
+                "retryable"
+              ],
+              "properties": {
+                "code": {
+                  "enum": [
+                    "EXTENSION_DISABLED",
+                    "OFFLINE",
+                    "INVALID_INPUT",
+                    "EXTENSION_UNAVAILABLE",
+                    "EXTENSION_FAILED"
+                  ]
+                },
+                "messageKey": {
+                  "type": "string"
+                },
+                "retryable": {
+                  "type": "boolean"
+                },
+                "details": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Unknown": {
+      "description": "Untrusted bundled JSON value, validated by get/getPreloadedCards runtime boundary"
+    }
+  }
+}

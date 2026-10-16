@@ -1,0 +1,9 @@
+{
+  "manifest_version": 3,
+  "name": "词伴 Google 发音助手",
+  "version": "1.0.0",
+  "description": "词伴本地学习网页的发音桥接器，仅选择已安装的 Google 英语语音。非 Google 官方产品。",
+  "permissions": ["tts"],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [{ "matches": ["http://localhost/*", "http://127.0.0.1/*"], "js": ["content.js"] }]
+}
