@@ -19,7 +19,7 @@ async function clickSnapshotText(text) {
 }
 
 try {
-  await call("browser_navigate", { url: "http://127.0.0.1:4173/" });
+  await call("browser_navigate", { url: process.env.CI_BUDDY_TEST_URL || "http://127.0.0.1:4173/" });
   await clickSnapshotText('button "完整模式');
   await clickSnapshotText('button "进入我的学习空间');
   await clickSnapshotText('button "词库');

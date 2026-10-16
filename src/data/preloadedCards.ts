@@ -1,6 +1,7 @@
 import pack from "./generated/oxford-cards.json";
 import { sampleCards } from "./sampleCards";
 import type { Card } from "../types";
+import { getEcdictCards } from "./ecdictCards";
 
 /** @functionId OXFORD-PRELOAD-001 @summary Load an authorized Oxford pack or explicitly labelled fixtures @module dictionary @input bundled JSON @output Card[] @permission local user @precondition build-time pack @postcondition provenance kept @sideEffects none @offline supported @idempotency deterministic @errors invalid pack falls back to demo @concurrency immutable import @performance O(n) @test src/data/preloadedCards.test.ts @since 1.0.0 */
 export function getPreloadedCards(value: unknown = pack): Card[] {
@@ -18,4 +19,4 @@ export function getPreloadedCards(value: unknown = pack): Card[] {
   return cards;
 }
 
-export const preloadedCards = getPreloadedCards();
+export const preloadedCards = [...getEcdictCards(), ...getPreloadedCards()];

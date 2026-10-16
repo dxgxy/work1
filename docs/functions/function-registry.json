@@ -198,6 +198,37 @@
       ],
       "owner": "local-web-maintainer",
       "since": "1.0.0"
+    },
+    {
+      "functionId": "ECDICT-PRELOAD-001",
+      "name": "getEcdictCards",
+      "module": "dictionary",
+      "summary": "Validate and map the bundled ECDICT offline word pack",
+      "implementationPath": "src/data/ecdictCards.ts",
+      "inputSchema": "contracts.schema.json#/$defs/EcdictPack",
+      "outputSchema": "contracts.schema.json#/$defs/CardList",
+      "errorCodes": [
+        "ECDICT_INVALID_PACK",
+        "ECDICT_DUPLICATE_WORD",
+        "ECDICT_INVALID_TAG"
+      ],
+      "permission": "none; bundled local dictionary",
+      "preconditions": [
+        "Pinned generated ECDICT pack with MIT notice"
+      ],
+      "postconditions": [
+        "Stable IDs, real translations and provenance retained; no audio download claims"
+      ],
+      "sideEffects": [],
+      "offline": "supported",
+      "idempotency": "Identical pack returns identical cards",
+      "concurrency": "Pure synchronous mapping",
+      "performance": "O(n) for 8512 entries",
+      "testPaths": [
+        "src/data/ecdictCards.test.ts"
+      ],
+      "owner": "local-web-maintainer",
+      "since": "1.0.0"
     }
   ]
 }

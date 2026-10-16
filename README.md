@@ -29,6 +29,8 @@ node scripts/verify-mcp.mjs
 
 ## 本轮新增
 
+- **现在已内置 8,512 个 ECDICT 英汉词条，无需 API 或账号。** 刷新网页 → 词库即可查看，支持中考、高考、四级、六级、雅思分类、搜索与分页。旧档案会自动补入词库并保留学习记录。来源、许可与数据生成方法见 [离线词库说明](docs/data/ecdict.md)。
+
 - 词库 → 批量导入：先下载 UTF-8 模板，选择 CSV / TXT（制表符）/ JSON 文件，检查预览与错误，确认后保存。格式详见 [词书导入规范](docs/wordbook-format.md)，模板在 `public/templates/`。
 - 设置 → Google 扩展发音：加载项目附带的 `extensions/google-pronunciation` 独立 Chrome 扩展，再启用并测试。助手仅选择系统可用列表中的 Google 英语语音；它不是 Google 官方扩展，也不自带 Google 语音引擎。未安装扩展、缺少语音或离线均会提示，不会用其他语音冒充。
 - Oxford 构建期数据生成与来源标记：[配置说明](docs/oxford-data-pipeline.md)。没有 API 凭据与离线许可时，预加载包仍为空，应用显示“演示数据”，不会声称现有示例来自 Oxford。

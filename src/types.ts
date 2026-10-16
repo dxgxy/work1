@@ -17,8 +17,10 @@ export interface Card {
   category: string;
   sourceType: "curated" | "user" | "imported";
   /** Source provenance is kept separate from the display category. */
-  contentProvider: "oxford-dictionaries-api" | "demo-fixture" | "user" | "imported";
-  contentLicense: "licensed-api" | "pending-license" | "user-owned" | "imported-by-user";
+  contentProvider: "oxford-dictionaries-api" | "ecdict" | "demo-fixture" | "user" | "imported";
+  contentLicense: "licensed-api" | "MIT" | "pending-license" | "user-owned" | "imported-by-user";
+  bookTags?: string[];
+  openDictionarySource?: { name: string; url: string; revision: string; license: string };
   dictionarySource?: { url: string; language: string; generatedAt: string; licenseReference: string };
   audioAvailable: boolean;
   pronunciationProvider: "google-extension" | "browser-speech" | "none";

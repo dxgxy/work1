@@ -1,5 +1,5 @@
-const VERSION = "ci-buddy-shell-v2";
-const STATIC = ["/", "/index.html", "/manifest.webmanifest", "/favicon.svg", "/templates/wordbook.csv", "/templates/wordbook.txt", "/templates/wordbook.json", "/templates/format.html"];
+const VERSION = "ci-buddy-shell-v3";
+const STATIC = ["/", "/index.html", "/manifest.webmanifest", "/favicon.svg", "/templates/wordbook.csv", "/templates/wordbook.txt", "/templates/wordbook.json", "/templates/format.html", "/licenses/ECDICT-MIT.txt"];
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(VERSION).then((cache) => cache.addAll(STATIC)));
   self.skipWaiting();
