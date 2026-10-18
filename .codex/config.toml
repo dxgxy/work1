@@ -21,3 +21,9 @@ url = "https://developers.openai.com/mcp"
 enabled = false
 startup_timeout_sec = 20
 tool_timeout_sec = 45
+
+[mcp_servers.github]
+url = "https://api.githubcopilot.com/mcp/"
+enabled = true
+startup_timeout_sec = 30
+tool_timeout_sec = 60

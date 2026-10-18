@@ -20,4 +20,4 @@
 
 ## GitHub MCP
 
-本轮尝试安装 `@modelcontextprotocol/server-github`，但 npm registry 在当前环境返回网络错误，未将失败安装写入依赖。不要把“已连接 GitHub MCP”作为提交证据；有 GitHub 凭据和可用网络后，再按团队工具配置启用，并单独记录握手结果。
+已改为 GitHub 官方远程 MCP 配置：`https://api.githubcopilot.com/mcp/`，配置位于 `.codex/config.toml`。首次使用需要在 Codex 客户端完成 GitHub OAuth；本地仓库不保存 PAT，也不执行 push 或部署。连接状态需要重载客户端后由用户登录验证。
