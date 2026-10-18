@@ -1,0 +1,20 @@
+:root { color: #183b31; background: #f5faf7; font: 13px/1.45 system-ui, -apple-system, "Microsoft YaHei", sans-serif; }
+* { box-sizing: border-box; }
+body { width: 360px; min-height: 420px; margin: 0; }
+header { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding:18px 18px 14px; background:#e3f4eb; border-bottom:1px solid #cfe7db; }
+h1 { margin:4px 0 0; font-size:18px; }
+.eyebrow { margin:0; color:#43816b; font-size:10px; letter-spacing:.12em; }
+.count { padding:4px 7px; color:#43816b; background:#fff; border-radius:999px; font-size:11px; white-space:nowrap; }
+main { padding:12px 14px 70px; }
+.state { padding:12px; color:#6a837a; background:#fff; border:1px solid #dbeae3; border-radius:10px; }
+.list { display:grid; gap:8px; margin-top:10px; }
+.item { display:grid; grid-template-columns:34px 48px 1fr; align-items:center; gap:9px; padding:8px; background:#fff; border:1px solid #e0ece6; border-radius:10px; }
+.item input { accent-color:#248262; }
+.item img { width:48px; height:42px; object-fit:cover; border-radius:6px; background:#edf5f0; }
+.item span { overflow:hidden; color:#6b8078; font-size:10px; text-overflow:ellipsis; white-space:nowrap; }
+footer { position:fixed; bottom:0; display:flex; gap:8px; width:360px; padding:12px 14px; background:rgba(255,255,255,.96); border-top:1px solid #dbeae3; }
+button { border:0; border-radius:8px; cursor:pointer; font:inherit; }
+button:disabled { cursor:not-allowed; opacity:.5; }
+.primary { flex:1; padding:10px 12px; color:#fff; background:#167456; }
+.secondary { padding:10px 12px; color:#24624f; background:#edf7f1; }
+.error { color:#a35242; background:#fff3ee; border-color:#f3d8ce; }

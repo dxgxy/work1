@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>词伴商品图片下载器</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <div>
+      <p class="eyebrow">词伴工具</p>
+      <h1>商品图片下载器</h1>
+    </div>
+    <span id="count" class="count">扫描中</span>
+  </header>
+  <main>
+    <div id="state" class="state">正在读取当前网页中的图片…</div>
+    <div id="list" class="list" aria-live="polite"></div>
+  </main>
+  <footer>
+    <button id="selectAll" class="secondary" type="button">全选</button>
+    <button id="download" class="primary" type="button" disabled>下载选中图片</button>
+  </footer>
+  <script src="popup.js"></script>
+</body>
+</html>
