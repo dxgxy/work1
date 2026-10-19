@@ -1,0 +1,12 @@
+{
+  "verifiedAt": "2026-10-19T04:47:26.297Z",
+  "status": "passed",
+  "browser": "C:/Users/31918/AppData/Local/ms-playwright/chromium-1228/chrome-win64/chrome.exe",
+  "extensionId": "dpbkibbjiphgncbjeogajonmpkmlnald",
+  "scannedItems": 4,
+  "popupItems": 3,
+  "screenshot": "output/playwright/image-downloader-real-popup.png",
+  "limitations": [
+    "Download API is exercised in headless Chromium; Chrome Web Store publishing and GitHub Pages hosting remain manual submission steps."
+  ]
+}

@@ -43,3 +43,7 @@ node scripts/browser-smoke.mjs
 ```
 
 本轮测试覆盖格式解析、编码、重复、超限、失败不写入、离线禁播与桥接回复校验。浏览器检查覆盖导入预览/确认和未启用扩展提示；尚未验证真实 Google 发声、真实 Oxford 请求或 Android。
+
+
+课程录音、作业提交项和需要手动完成的 GitHub/Pages 步骤见 [课程与作业分析](docs/course-homework.md)。
+
